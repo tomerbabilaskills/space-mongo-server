@@ -4,10 +4,7 @@ const api = require('./api');
 
 const app = express();
 
-const mongooseOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
+const mongooseOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 app.use(express.json());
 
