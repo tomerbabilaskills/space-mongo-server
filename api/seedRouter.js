@@ -1,7 +1,8 @@
 const { Router } = require('express');
-const planetModel = require('../Models/planetModel');
-const solarSystemModel = require('../Models/solarSystemModel');
-const visitorModel = require('../Models/visitorModel');
+const mongoose = require('mongoose');
+const planetModel = require('../models/planetModel');
+const solarSystemModel = require('../models/solarSystemModel');
+const visitorModel = require('../models/visitorModel');
 
 const router = Router();
 
@@ -44,6 +45,27 @@ router.post('/', async (req, res) => {
     res.json({ newSolarSystems, newPlanets, newVisitors });
   } catch (error) {
     res.send(error);
+  }
+});
+
+router.post('/connections', async (req, res) => {
+  const whatToFind = req.body.type;
+
+  try {
+    if (whatToFind === 'planet') {
+      await planetModel.findByIdAndUpdate(req.body.id, {
+        system: mongoose.Types.ObjectId(req.body.systemId),
+      });
+    }
+    if (whatToFind === 'visitor') {
+      await visitorModel.findByIdAndUpdate(req.body.id, {
+        homePlanet: mongoose.Types.ObjectId(req.body.planetId),
+      });
+    }
+
+    res.send(`${whatToFind} updated`);
+  } catch (error) {
+    console.log(error);
   }
 });
 
