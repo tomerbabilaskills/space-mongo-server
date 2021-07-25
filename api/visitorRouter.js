@@ -7,20 +7,26 @@ const router = Router();
 
 const { ObjectId } = mongoose.Types;
 
+// [POST] - visit a planet
 router.post('/visit', async (req, res) => {
   const { planetId, visitorId } = req.body;
 
-  const visitor = await visitorModel.findByIdAndUpdate(visitorId, {
-    $push: { visitedPlanets: ObjectId(planetId) },
-  });
+  try {
+    const visitor = await visitorModel.findByIdAndUpdate(visitorId, {
+      $push: { visitedPlanets: ObjectId(planetId) },
+    });
 
-  const planet = await planetModel.findByIdAndUpdate(planetId, {
-    $push: { visitors: ObjectId(visitorId) },
-  });
+    const planet = await planetModel.findByIdAndUpdate(planetId, {
+      $push: { visitors: ObjectId(visitorId) },
+    });
 
-  res.json({ visitor, planet });
+    res.json({ visitor, planet });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
+// [GET] - find visitor list of visited planets
 router.get('/:id', async (req, res) => {
   const visitorId = req.params.id;
 
