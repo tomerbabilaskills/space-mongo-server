@@ -69,4 +69,15 @@ router.post('/connections', async (req, res) => {
   }
 });
 
+router.post('/reset', async (req, res) => {
+  try {
+    await planetModel.updateMany({}, { visitors: [] });
+    await visitorModel.updateMany({}, { visitedPlanets: [] });
+
+    res.send('reset visits');
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;

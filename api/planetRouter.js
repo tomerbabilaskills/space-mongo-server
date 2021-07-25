@@ -21,15 +21,7 @@ router.get('/:id?', async (req, res) => {
           as: 'visitors',
         },
       },
-      { $unwind: '$visitors' },
-      { $project: { _id: 1, visitors: { _id: 1, name: 1 }, name: 1 } },
-      {
-        $group: {
-          _id: '$_id',
-          name: { $first: '$name' },
-          visitors: { $push: '$visitors' },
-        },
-      },
+      { $project: { _id: 1, name: 1, visitors: { _id: 1, name: 1 } } },
     ];
 
     if (planetId) pipeline.unshift({ $match: { _id: ObjectId(planetId) } });
