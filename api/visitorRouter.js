@@ -21,4 +21,18 @@ router.post('/visit', async (req, res) => {
   res.json({ visitor, planet });
 });
 
+router.get('/:id', async (req, res) => {
+  const visitorId = req.params.id;
+
+  try {
+    const visitedPlanets = await visitorModel
+      .findById(visitorId)
+      .populate({ path: 'visitedPlanets', select: 'name' });
+
+    res.json(visitedPlanets);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
