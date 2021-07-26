@@ -64,7 +64,7 @@ router.get('/system-visitors/:id?', async (req, res) => {
           _id: 1,
           name: 1,
           visitors: { _id: 1, name: 1 },
-          system: { _id: 1, starName: 1 },
+          star: '$system.starName',
         },
       },
     ];
